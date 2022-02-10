@@ -1,5 +1,5 @@
-import React from 'react';
-import qs from 'qs'
+//import React from 'react';
+import * as qs from 'qs'
 import { List } from "./list"
 import { SearchPanel } from "./search-panel"
 import { useEffect,useState } from "react"
@@ -10,9 +10,9 @@ export const ProjectListScreen = () => {
     const [users, setUsers] = useState([])
     const [param, setParam] = useState({
         name:'',
-        personId:''
+        personId:'' 
     })
-    const debouncedParam = useDebounce(param, 2000)
+    const debouncedParam = useDebounce(param, 200)
     const [list, setList] = useState([])
 
     useEffect(() => {
