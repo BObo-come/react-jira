@@ -40,7 +40,7 @@ export const useMount = (callback: () => void) => {
 // log()
 // log()
 // 后面用泛型来规范类型
-export const useDebounce = (value: unknown, delay? : number): any => {
+export const useDebounce = <V>(value: V, delay? : number) => {
     const [debouncedValue, setDebouncedValue] = useState(value)
     //console.log(value.mayNotExist)
     useEffect(() => {
@@ -50,4 +50,19 @@ export const useDebounce = (value: unknown, delay? : number): any => {
         return () => clearTimeout(timeout)
     },[value, delay])
     return debouncedValue
+}
+
+export const useArray = <T>(initialArray: T[]) => {
+    const [value, setValue] = useState(initialArray)
+    return {
+        value,
+        setValue,
+        add:(item:T) => setValue([...value,item]),
+        clear: ()=> setValue([]),
+        removeIndex: (index:number) => {
+            const copy = [...value]
+            copy.splice(index,1)
+            setValue(copy)
+        }
+    }
 }
