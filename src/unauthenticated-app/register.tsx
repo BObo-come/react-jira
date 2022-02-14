@@ -2,14 +2,23 @@ import React, { FormEvent } from 'react'
 import { useAuth } from '../context/auth-context'
 import {Form,Input,Button} from 'antd'
 import { LongButton } from '.'
-export const RegisterScreen = () => {
+export const RegisterScreen = ({onError}:{onError:(error:Error)=>void}) => {
     const {register, user} = useAuth()
-
-    const handleSubmit = (values:{username:string,password:string})=> {
+    const {run,isLoading} = useAsync(undefined, {throwOnError: true})
+    const handleSubmit = async ({cpassword,...values}:{username:string,password:string, cpassword:string})=> {
         // event.preventDefault()
         // const username = (event.currentTarget.elements[0] as HTMLInputElement).value
         // const password = (event.currentTarget.elements[1] as HTMLInputElement).value
-        register(values)
+        if(cpassword !== values.password) {
+            onError(new Error('请确认两次输入的密码相同'))
+            return
+        }
+        try{
+            // await register(values)
+            await run(register(values))
+        }catch(e){
+            onError(e as Error)
+        }
     }
     return  <Form onFinish={handleSubmit}>
     <Form.Item name={'username'} rules={[{required:true,message:'请输入用户名'}]}>
@@ -20,8 +29,12 @@ export const RegisterScreen = () => {
         {/* <label htmlFor='password'>密码</label> */}
         <Input placeholder='密码' type="password" id='password' />
     </Form.Item>
+    <Form.Item name={'cpassword'} rules={[{required:true,message:'请确认密码'}]}>
+        {/* <label htmlFor='password'>密码</label> */}
+        <Input placeholder='确认密码' type="password" id='cpassword' />
+    </Form.Item>
     <Form.Item>
-         <LongButton htmlType='submit' type='primary'>注册</LongButton>
+         <LongButton loading={isLoading} htmlType='submit' type='primary'>注册</LongButton>
     </Form.Item>
 </Form>
 }

@@ -1,46 +1,67 @@
 //import React from 'react';
-import * as qs from 'qs'
+// import * as qs from 'qs'
 import { List } from "./list"
 import { SearchPanel } from "./search-panel"
-import { useEffect,useState } from "react"
-import { cleanObject, useDebounce, useMount } from '../../utils';
-import { useHttp } from '../../utils/http';
+// import { useEffect,useState } from "react"
+import { useState } from "react"
+// import { cleanObject, useDebounce, useMount } from '../../utils';
+// import { useHttp } from '../../utils/http';
+import { useDebounce } from '../../utils';
 import styled from '@emotion/styled';
+import { Typography } from 'antd';
+// import { useAsync } from '../../utils/use-async';
+// import { Project } from './list'
+import { useProjects } from '../../utils/project';
+import { useUsers } from '../../utils/user';
 
-const apiUrl = process.env.REACT_APP_API_URL
+// const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectListScreen = () => {
-    const [users, setUsers] = useState([])
+    // const [users, setUsers] = useState([])
+    // const [isLoading, setIsLoading] = useState(false)
+    // const [error, setError] = useState<null | Error>(null)
     const [param, setParam] = useState({
         name:'',
         personId:'' 
     })
     const debouncedParam = useDebounce(param, 200)
-    const [list, setList] = useState([])
-    const client = useHttp()
-
-    useEffect(() => {
-        client('projects', {data: cleanObject(debouncedParam)}).then(setList)
+    // const [list, setList] = useState([])
+    // const client = useHttp()
+    // const {run,isLoading,error,data:list} = useAsync<Project[]>()
+    const {isLoading,error,data:list} = useProjects(debouncedParam)
+    // useEffect(() => {
+    //     run(client('projects', {data: cleanObject(debouncedParam)}))
+        // setIsLoading(true)
+        // client('projects', {data: cleanObject(debouncedParam)})
+        // .then(setList)
+        // .catch( error => {
+        //     setList([])
+        //     setError(error)
+        // })
+        // .finally(()=> {
+        //     setIsLoading(false)
+        // })
         // fetch(`${apiUrl}/projects?${qs.stringify(cleanObject(debouncedParam))}`).then(async response => {
         //     if(response.ok){
         //         setList(await response.json())
         //     }
         // })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [debouncedParam])
+    // }, [debouncedParam])
 
-    useMount(() => {
-        client('users').then(setUsers)
-        // fetch(`${apiUrl}/users`).then(async response => {
-        //     if(response.ok){
-        //         setUsers(await response.json())
-        //     }
-        // })
-    })
-
+    // useMount(() => {
+    //     client('users').then(setUsers)
+    //     // fetch(`${apiUrl}/users`).then(async response => {
+    //     //     if(response.ok){
+    //     //         setUsers(await response.json())
+    //     //     }
+    //     // })
+    // })
+    const {data:users} = useUsers()
     return <Container>
         <h1>项目列表</h1>
-        <SearchPanel param={param} setParam = {setParam} users={users}/>
-        <List users={users} list={ list }/>
+        <SearchPanel param={param} setParam = {setParam} users={users||[]}/>
+        {error?<Typography.Text type='danger'>{error.message}</Typography.Text>:null}
+        <List loading={isLoading} users={users||[]} dataSource={ list || [] }/>
     </Container>
 }
 
