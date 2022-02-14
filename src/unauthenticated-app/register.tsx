@@ -2,6 +2,7 @@ import React, { FormEvent } from 'react'
 import { useAuth } from '../context/auth-context'
 import {Form,Input,Button} from 'antd'
 import { LongButton } from '.'
+import { useAsync } from '../utils/use-async'
 export const RegisterScreen = ({onError}:{onError:(error:Error)=>void}) => {
     const {register, user} = useAuth()
     const {run,isLoading} = useAsync(undefined, {throwOnError: true})
