@@ -35,5 +35,5 @@ export const FullPageLoading = () => <FullPage>
 
 export const FullPageErrorback = ({error}:{error:Error|null}) => <FullPage>
     <DevTools/>
-<   Typography.Text type='danger'>{error?.message}</>
+    <Typography.Text type='danger'>{error?.message}</Typography.Text>
 </FullPage>

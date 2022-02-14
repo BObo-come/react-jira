@@ -1,6 +1,9 @@
+
 import React from 'react';
 import './App.css';
 import { AuthenticatedApp } from './authenticated-app';
+import { ErrorBoundary } from './components/error-boundary';
+import { FullPageErrorback } from './components/lib';
 import { useAuth } from './context/auth-context';
 import { UnauthenticatedApp } from './unauthenticated-app';
 // import { ProjectListScreen } from './screens/project-list';
@@ -11,7 +14,9 @@ function App() {
   const {user} = useAuth()
   return (
     <div className="App">
-        {user? <AuthenticatedApp/>:<UnauthenticatedApp/>}
+      <ErrorBoundary fallbackRender={FullPageErrorback}>
+          {user? <AuthenticatedApp/>:<UnauthenticatedApp/>}
+      </ErrorBoundary>
     </div>
   );
 }
