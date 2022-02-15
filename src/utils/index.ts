@@ -11,9 +11,8 @@ export const cleanObject = (object: {[key:string]: unknown}) => {
             delete result[key]
         }
     })
-    console.log(result)
     return result
-} 
+}
 
 
 export const useMount = (callback: () => void) => {
@@ -66,4 +65,23 @@ export const useArray = <T>(initialArray: T[]) => {
             setValue(copy)
         }
     }
+}
+
+export const useDocumentTitle = (title: string, keepOnUnmout:boolean = true) => {
+    const oldTitle = document.title
+
+    console.log('渲染时的oldTitle',oldTitle)
+
+    useEffect(() => {
+        document.title = title
+    },[title])
+
+    useEffect(() => {
+        return () => {
+            if(!keepOnUnmout){
+                console.log('卸载时的oldTitle',oldTitle)
+                document.title = oldTitle
+            }
+        }
+    },[])
 }

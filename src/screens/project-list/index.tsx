@@ -6,13 +6,14 @@ import { SearchPanel } from "./search-panel"
 import { useState } from "react"
 // import { cleanObject, useDebounce, useMount } from '../../utils';
 // import { useHttp } from '../../utils/http';
-import { useDebounce } from '../../utils';
+import { useDebounce, useDocumentTitle } from '../../utils';
 import styled from '@emotion/styled';
 import { Typography } from 'antd';
 // import { useAsync } from '../../utils/use-async';
 // import { Project } from './list'
 import { useProjects } from '../../utils/project';
 import { useUsers } from '../../utils/user';
+import { Helmet } from "react-helmet";
 
 // const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectListScreen = () => {
@@ -57,7 +58,12 @@ export const ProjectListScreen = () => {
     //     // })
     // })
     const {data:users} = useUsers()
+
+    useDocumentTitle('项目列表',false)
     return <Container>
+        {/* <Helmet>
+            <title>项目列表</title>
+        </Helmet> */}
         <h1>项目列表</h1>
         <SearchPanel param={param} setParam = {setParam} users={users||[]}/>
         {error?<Typography.Text type='danger'>{error.message}</Typography.Text>:null}
