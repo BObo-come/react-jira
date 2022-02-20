@@ -14,16 +14,20 @@ import { Typography } from 'antd';
 import { useProjects } from '../../utils/project';
 import { useUsers } from '../../utils/user';
 import { Helmet } from "react-helmet";
+import { useUrlQueryParam } from "../../utils/url";
 
 // const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectListScreen = () => {
     // const [users, setUsers] = useState([])
     // const [isLoading, setIsLoading] = useState(false)
     // const [error, setError] = useState<null | Error>(null)
-    const [param, setParam] = useState({
-        name:'',
-        personId:'' 
-    })
+    // const [, setParam] = useState({
+    //     name:'',
+    //     personId:'' 
+    // })
+    const [keys,setKeys] = useState<('name'|'personId')[]>(['name','personId'])
+    const [param,setParam] = useUrlQueryParam(keys)
+
     const debouncedParam = useDebounce(param, 200)
     // const [list, setList] = useState([])
     // const client = useHttp()
@@ -70,6 +74,8 @@ export const ProjectListScreen = () => {
         <List loading={isLoading} users={users||[]} dataSource={ list || [] }/>
     </Container>
 }
+
+ProjectListScreen.whyDidYouRender = true
 
 const Container = styled.div`
     padding:3.2rem

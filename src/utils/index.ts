@@ -110,3 +110,5 @@ const ummount = add()
 add()
 add()
 ummount() // 1
+
+export const resetRoute = () => window.location.href = window.location.origin
