@@ -15,9 +15,11 @@ import { useProjects } from '../../utils/project';
 import { useUsers } from '../../utils/user';
 import { Helmet } from "react-helmet";
 import { useUrlQueryParam } from "../../utils/url";
+import { useProjectsSearchParams } from "./util";
 
 // const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectListScreen = () => {
+    useDocumentTitle('项目列表',false)
     // const [users, setUsers] = useState([])
     // const [isLoading, setIsLoading] = useState(false)
     // const [error, setError] = useState<null | Error>(null)
@@ -25,9 +27,10 @@ export const ProjectListScreen = () => {
     //     name:'',
     //     personId:'' 
     // })
-    const [keys,setKeys] = useState<('name'|'personId')[]>(['name','personId'])
-    const [param,setParam] = useUrlQueryParam(keys)
-
+    // const [keys,setKeys] = useState<('name'|'personId')[]>(['name','personId'])
+    // const [param,setParam] = useUrlQueryParam(keys)
+    // const projectsParam = {...param, personId: Number(param.personId)||undefined}
+    const [param,setParam] = useProjectsSearchParams()
     const debouncedParam = useDebounce(param, 200)
     // const [list, setList] = useState([])
     // const client = useHttp()
@@ -63,7 +66,6 @@ export const ProjectListScreen = () => {
     // })
     const {data:users} = useUsers()
 
-    useDocumentTitle('项目列表',false)
     return <Container>
         {/* <Helmet>
             <title>项目列表</title>

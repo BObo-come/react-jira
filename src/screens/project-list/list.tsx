@@ -3,13 +3,13 @@
 import { User } from "./search-panel"
 import {Table, TableProps} from 'antd'
 import dayjs from "dayjs"
-import { ProjectListScreen } from "."
+// import { ProjectListScreen } from "."
 // react-router 和 react-router-dom的关系 类似于react和 react-dom/react-native/react-vr...
 import { Link } from "react-router-dom"
 export interface Project {
-    id: string;
+    id: number;
     name: string;
-    personId: string;
+    personId: number;
     pin: boolean;
     organization: string;
     created:number;
