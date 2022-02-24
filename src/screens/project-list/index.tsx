@@ -35,7 +35,7 @@ export const ProjectListScreen = () => {
     // const [list, setList] = useState([])
     // const client = useHttp()
     // const {run,isLoading,error,data:list} = useAsync<Project[]>()
-    const {isLoading,error,data:list} = useProjects(debouncedParam)
+    const {isLoading,error,data:list,retry} = useProjects(debouncedParam)
     // useEffect(() => {
     //     run(client('projects', {data: cleanObject(debouncedParam)}))
         // setIsLoading(true)
@@ -73,7 +73,7 @@ export const ProjectListScreen = () => {
         <h1>项目列表</h1>
         <SearchPanel param={param} setParam = {setParam} users={users||[]}/>
         {error?<Typography.Text type='danger'>{error.message}</Typography.Text>:null}
-        <List loading={isLoading} users={users||[]} dataSource={ list || [] }/>
+        <List refresh={retry} loading={isLoading} users={users||[]} dataSource={ list || [] }/>
     </Container>
 }
 
