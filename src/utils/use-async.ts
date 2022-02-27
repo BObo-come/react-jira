@@ -1,5 +1,5 @@
 import { useMountedRef } from './index';
-import { useState } from "react"
+import { useCallback, useState } from "react"
 
 interface State<D> {
     error: Error | null;
@@ -30,20 +30,20 @@ export const useAsync = <D>(initialState?:State<D>,initialConfig?:typeof default
     // useState直接传入函数的含义是：惰性初始化，所以用useState保存函数不能直接传入函数
     const [retry,setRetry] = useState(()=>()=>{})
 
-    const setData = (data:D) => setState({
+    const setData = useCallback((data:D) => setState({
         data,
         stat:'success',
         error:null
-    })
+    }),[])
 
-    const setError = (error:Error) => setState({
+    const setError = useCallback((error:Error) => setState({
         error,
         stat:'error',
         data:null
-    })
+    }),[])
 
     // run 用来出发异步请求
-    const run =(promise:Promise<D>, runConfig?: {retry: () => Promise<D>}) => {
+    const run = useCallback((promise:Promise<D>, runConfig?: {retry: () => Promise<D>}) => {
         if(!promise || !promise.then) {
             throw new Error('请传入Promise类型数据')
         }
@@ -54,7 +54,7 @@ export const useAsync = <D>(initialState?:State<D>,initialConfig?:typeof default
                 run(runConfig?.retry(),runConfig)
             }
         })
-        setState({...state,stat:'loading'})
+        setState(prevState => ({...prevState,stat:'loading'}))
         return promise
         .then(data => {
             if(mountedRef.current)
@@ -66,7 +66,7 @@ export const useAsync = <D>(initialState?:State<D>,initialConfig?:typeof default
             console.log(config.throwOnError)
             if(config.throwOnError) return Promise.reject(error)
         })
-    }
+    },[config.throwOnError, mountedRef, setData ,setError])
 
     // const retry = () => {
     //     run(oldPromise)
