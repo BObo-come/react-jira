@@ -19,7 +19,7 @@ import { useProjectsSearchParams } from "./util";
 import { Row } from "../../components/lib";
 
 // const apiUrl = process.env.REACT_APP_API_URL
-export const ProjectListScreen = (props:{setProjectModalOpen: (isOpen:boolean) => void}) => {
+export const ProjectListScreen = (props:{projectButton: JSX.Element}) => {
     useDocumentTitle('项目列表',false)
     // const [users, setUsers] = useState([])
     // const [isLoading, setIsLoading] = useState(false)
@@ -73,11 +73,12 @@ export const ProjectListScreen = (props:{setProjectModalOpen: (isOpen:boolean) =
         </Helmet> */}
         <Row between={true}>
             <h1>项目列表</h1>
-            <Button onClick={() => props.setProjectModalOpen(true)}>创建项目</Button>
+            {props.projectButton}
+            {/* <Button onClick={() => props.setProjectModalOpen(true)}>创建项目</Button> */}
         </Row>
         <SearchPanel param={param} setParam = {setParam} users={users||[]}/>
         {error?<Typography.Text type='danger'>{error.message}</Typography.Text>:null}
-        <List setProjectModalOpen = {props.setProjectModalOpen} refresh={retry} loading={isLoading} users={users||[]} dataSource={ list || [] }/>
+        <List projectButton={props.projectButton} refresh={retry} loading={isLoading} users={users||[]} dataSource={ list || [] }/>
     </Container>
 }
 
