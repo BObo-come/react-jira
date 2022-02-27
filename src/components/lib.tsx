@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from "@emotion/styled";
-import { Spin, Typography } from "antd";
+import { Button, Spin, Typography } from "antd";
 import { DevTools } from 'jira-dev-tool';
 
 export const Row = styled.div<{
@@ -37,3 +37,7 @@ export const FullPageErrorback = ({error}:{error:Error|null}) => <FullPage>
     <DevTools/>
     <Typography.Text type='danger'>{error?.message}</Typography.Text>
 </FullPage>
+
+export const ButtonNoPadding = styled(Button)`
+    padding: 0;
+`

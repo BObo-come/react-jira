@@ -8,7 +8,7 @@ import { useState } from "react"
 // import { useHttp } from '../../utils/http';
 import { useDebounce, useDocumentTitle } from '../../utils';
 import styled from '@emotion/styled';
-import { Typography } from 'antd';
+import { Button, Typography } from 'antd';
 // import { useAsync } from '../../utils/use-async';
 // import { Project } from './list'
 import { useProjects } from '../../utils/project';
@@ -16,9 +16,10 @@ import { useUsers } from '../../utils/user';
 import { Helmet } from "react-helmet";
 import { useUrlQueryParam } from "../../utils/url";
 import { useProjectsSearchParams } from "./util";
+import { Row } from "../../components/lib";
 
 // const apiUrl = process.env.REACT_APP_API_URL
-export const ProjectListScreen = () => {
+export const ProjectListScreen = (props:{setProjectModalOpen: (isOpen:boolean) => void}) => {
     useDocumentTitle('项目列表',false)
     // const [users, setUsers] = useState([])
     // const [isLoading, setIsLoading] = useState(false)
@@ -70,10 +71,13 @@ export const ProjectListScreen = () => {
         {/* <Helmet>
             <title>项目列表</title>
         </Helmet> */}
-        <h1>项目列表</h1>
+        <Row between={true}>
+            <h1>项目列表</h1>
+            <Button onClick={() => props.setProjectModalOpen(true)}>创建项目</Button>
+        </Row>
         <SearchPanel param={param} setParam = {setParam} users={users||[]}/>
         {error?<Typography.Text type='danger'>{error.message}</Typography.Text>:null}
-        <List refresh={retry} loading={isLoading} users={users||[]} dataSource={ list || [] }/>
+        <List setProjectModalOpen = {props.setProjectModalOpen} refresh={retry} loading={isLoading} users={users||[]} dataSource={ list || [] }/>
     </Container>
 }
 
