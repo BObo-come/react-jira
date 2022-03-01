@@ -9,6 +9,8 @@ import { Link } from "react-router-dom"
 import { Pin } from "../../components/pin"
 import { useEditProject } from "../../utils/project"
 import { ButtonNoPadding } from "../../components/lib"
+import { useDispatch } from "react-redux"
+import { projectListActions } from "./project-list.clice"
 export interface Project {
     id: number;
     name: string;
@@ -29,6 +31,7 @@ export const List = ({ users, ...props}:ListProps) => {
     const {mutate} = useEditProject()
     // const pinProject = (id:number,pin:boolean) => mutate({id,pin})
     const pinProject = (id:number) => (pin:boolean) => mutate({id,pin}).then(props.refresh) //柯里化写法
+    const dispatch = useDispatch()
     return <Table rowKey={"id"} pagination={false} columns={[
         {
             title:<Pin checked={true} disabled={true}/>,
@@ -71,7 +74,8 @@ export const List = ({ users, ...props}:ListProps) => {
             render(value, project){
                 return <Dropdown overlay={<Menu>
                     <Menu.Item key={'edit'}>
-                        {props.projectButton}
+                        <ButtonNoPadding onClick={() => dispatch(projectListActions.openProjectModal())} type="link">编辑</ButtonNoPadding>
+                        {/* {props.projectButton} */}
                         {/* <ButtonNoPadding type="link" onClick={() => props.setProjectModalOpen(true)}>编辑</ButtonNoPadding> */}
                     </Menu.Item>
                 </Menu>}>

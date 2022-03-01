@@ -16,7 +16,9 @@ import { useUsers } from '../../utils/user';
 import { Helmet } from "react-helmet";
 import { useUrlQueryParam } from "../../utils/url";
 import { useProjectsSearchParams } from "./util";
-import { Row } from "../../components/lib";
+import { ButtonNoPadding, Row } from "../../components/lib";
+import { useDispatch } from "react-redux";
+import { projectListActions } from "./project-list.clice";
 
 // const apiUrl = process.env.REACT_APP_API_URL
 export const ProjectListScreen = (props:{projectButton: JSX.Element}) => {
@@ -66,6 +68,7 @@ export const ProjectListScreen = (props:{projectButton: JSX.Element}) => {
     //     // })
     // })
     const {data:users} = useUsers()
+    const dispatch = useDispatch()
 
     return <Container>
         {/* <Helmet>
@@ -73,7 +76,11 @@ export const ProjectListScreen = (props:{projectButton: JSX.Element}) => {
         </Helmet> */}
         <Row between={true}>
             <h1>项目列表</h1>
-            {props.projectButton}
+            <ButtonNoPadding 
+                onClick={() => dispatch(projectListActions.openProjectModal())} 
+                type="link">
+                    创建项目
+            </ButtonNoPadding>
             {/* <Button onClick={() => props.setProjectModalOpen(true)}>创建项目</Button> */}
         </Row>
         <SearchPanel param={param} setParam = {setParam} users={users||[]}/>
